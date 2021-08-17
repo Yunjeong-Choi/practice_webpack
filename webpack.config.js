@@ -1,12 +1,17 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const port = process.env.PORT || 3000;
+
 module.exports = {
   mode: "development",
   entry: {
-    index: "./src/index.js",
+    index: "./src/index.jsx",
   },
   output: {
     filename: "bundle.[name].js",
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   module: {
     rules: [
@@ -17,6 +22,12 @@ module.exports = {
           "css-loader", //css을 읽어서 webpack으로 가져오라
           //뒷쪽에 있는 로더가 먼저 실행된다.
         ],
+      },
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        use: {
+          loader: "babel-loader",
+        },
       },
     ],
   },
@@ -35,4 +46,9 @@ module.exports = {
       }
     ), //html을 템플릿으로 하여 웹팩으로 번들링을 했을때 dist에 최종 완성된 html이 저장될 수 있도록 하는 역할
   ],
+  devServer: {
+    host: "localhost",
+    port,
+    open: true,
+  },
 };
